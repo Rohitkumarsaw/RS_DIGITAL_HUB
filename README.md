@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=RS%20Digital%20Hub&fontSize=60&fontAlignY=35&animation=fadeIn&desc=Premium%20Digital%20Product%20Marketplace&descAlignY=55"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=2563EB&height=200&section=header&text=RS%20Digital%20Hub&fontSize=60&fontAlignY=35&animation=fadeIn&desc=Premium%20Digital%20Product%20Marketplace&descAlignY=55"/>
 </p>
 
 <p align="center">
@@ -215,5 +215,5 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 </p>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=2563EB&height=120&section=footer"/>
 </p>
