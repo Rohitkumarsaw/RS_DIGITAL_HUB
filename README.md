@@ -207,7 +207,7 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 ## 📄 License
 
 <p align="center">
-  <b>MIT License</b> — Free to use, modify, and distribute.
+  <b>All Rights Reserved</b> — Proprietary and confidential.
 </p>
 
 <p align="center">
