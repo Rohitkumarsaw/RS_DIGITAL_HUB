@@ -1,0 +1,34 @@
+# OS files
+Thumbs.db
+.DS_Store
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# PHP
+*.log
+
+# Uploaded files (keep structure, not files)
+uploads/products/*
+uploads/screenshots/*
+uploads/id_proofs/*
+uploads/admin_assets/*
+!uploads/products/.gitkeep
+!uploads/screenshots/.gitkeep
+!uploads/id_proofs/.gitkeep
+!uploads/admin_assets/.gitkeep
+
+# Test PDFs
+test_*.pdf
+test_stamp*.pdf
+
+# Environment
+.env
+.env.local

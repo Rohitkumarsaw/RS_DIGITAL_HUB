@@ -1,0 +1,117 @@
+# New Features — Documentation
+
+## 1. Simultaneous Login Limit (Session Restriction)
+
+**How it works:**
+- When a user logs in, a session record is created in the `sessions` table with a unique token (`AUTH_TOKEN` cookie).
+- Each protected-page request validates this token against the `sessions` table.
+- If the number of active sessions for a user reaches `MAX_ACTIVE_SESSIONS` (default: 2), the oldest session is automatically deactivated.
+- On logout, the session is marked inactive and the cookie is cleared.
+
+**Configuration:**
+- `MAX_ACTIVE_SESSIONS` — defined in `includes/session_helper.php` (line 2). Change this value to `1` or any integer.
+
+**Migration:**
+```bash
+mysql -u root ybt_digital < migrations/001_create_sessions.sql
+```
+
+**Admin page:**
+- `/admin/sessions.php` — list all active sessions, terminate any session manually.
+
+**Files added/modified:**
+- `includes/session_helper.php` — new: `createSession()`, `validateSession()`, `destroySession()`
+- `config.php` — modified: session validation on every page (skips login/logout/signup/reset-password)
+- `login.php` — modified: calls `createSession()` after successful login
+- `admin/login.php` — modified: calls `createSession()` after successful login
+- `logout.php` — modified: calls `destroySession()` before destroying session
+
+---
+
+## 2. Admin ↔ Developer Messaging
+
+**Features:**
+- Admin can send messages to any developer via a compose form.
+- Developers can only reply to admins (cannot message other developers).
+- One-level threaded conversations via `parent_message_id`.
+- Messages can be marked as read (automatic on view) and archived.
+
+**Migration:**
+```bash
+mysql -u root ybt_digital < migrations/002_create_messages.sql
+```
+
+**Pages:**
+- `/admin/messages.php` — inbox, sent, compose, thread view (admin + developer)
+- `/admin/ajax/send_message.php` — AJAX endpoint (POST)
+- `/admin/ajax/mark_read.php` — AJAX mark-as-read endpoint (POST)
+
+**Rules:**
+- CSRF token required for all AJAX requests (stored in `$_SESSION['csrf_token']`).
+
+---
+
+## 3. Pay-as-you-go Credits (Hybrid Model)
+
+**How it works:**
+- Users have a `credits_wallet` balance.
+- Each download or API hit can deduct credits via `chargeCredits()`.
+- If user has an active subscription, credits are NOT consumed (unlimited).
+- Credits can be purchased via Razorpay (manual or future integration), or adjusted by admin.
+
+**Helper functions (in `includes/credits.php`):**
+- `getWalletBalance($pdo, $userId)` — returns current balance (0 if no wallet).
+- `ensureWallet($pdo, $userId)` — creates wallet row if missing.
+- `chargeCredits($pdo, $userId, $amount, $reference)` — deducts credits inside a DB transaction. Returns `['success' => true/false, 'balance' => N, 'error' => '...']`.
+- `addCredits($pdo, $userId, $amount, $type, $reference)` — adds credits (`type` can be 'purchase', 'admin_adjust', 'refund').
+- `hasActiveSubscription($pdo, $userId)` — checks for active+unexpired subscription.
+
+**Migration:**
+```bash
+mysql -u root ybt_digital < migrations/004_create_credits_wallet_and_transactions.sql
+```
+
+**Pages:**
+- `/admin/credits.php` — admin: list all users + balances, manual adjust, transaction log.
+- `/credits.php` — user/developer: view balance and transaction history.
+
+---
+
+## 4. Premium Invoice Template
+
+**How it works:**
+- Existing "current" template remains unchanged.
+- New "premium" template at `invoices/templates/premium.php` with modern layout, better typography, dark top bar, info cards, and payment summary section.
+- Default template can be set in admin Settings → Invoice tab.
+- URL override: `?template=premium` or `?template=current` in the invoice URL.
+
+**Migration:**
+```bash
+mysql -u root ybt_digital < migrations/003_add_template_version_to_invoices.sql
+```
+
+**Files added/modified:**
+- `invoices/templates/premium.php` — new premium HTML template.
+- `invoices/generate_invoice.php` — modified: added template selection logic + invoice data array for templates.
+- `admin/settings.php` — modified: added "Invoice Template" dropdown in Invoice tab.
+
+**Customizing the premium template:**
+- Edit `invoices/templates/premium.php` to change colors, fonts, logo, or layout.
+- The template receives a `$invoiceData` array with: `siteName`, `invoiceNumber`, `type`, `sellerName`, `sellerEmail`, `sellerGst`, `buyerName`, `buyerEmail`, `dateStr`, `items`, `totalAmount`, `totalFormatted`, `discountAmount`, `taxAmount`, `signaturePath`, `signatureText`, `signatureName`, `amountWords`.
+
+---
+
+## Migration Order
+
+Run migrations in this order (all are independent but numbered logically):
+
+```bash
+mysql -u root ybt_digital < migrations/001_create_sessions.sql
+mysql -u root ybt_digital < migrations/002_create_messages.sql
+mysql -u root ybt_digital < migrations/003_add_template_version_to_invoices.sql
+mysql -u root ybt_digital < migrations/004_create_credits_wallet_and_transactions.sql
+```
+
+## CSRF Token
+
+The login process now auto-generates a CSRF token (`$_SESSION['csrf_token']`). All AJAX endpoints require this token to be sent as `csrf_token` in POST data.

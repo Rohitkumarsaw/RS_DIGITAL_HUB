@@ -1,0 +1,8 @@
+# Prevent PHP execution in uploads
+<FilesMatch "\.(php|php3|php4|php5|phtml)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Enable direct access to files
+Options +Indexes
