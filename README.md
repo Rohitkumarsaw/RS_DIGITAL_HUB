@@ -68,6 +68,7 @@
 | **Upload Sandbox** | `.htaccess` blocks PHP execution in uploads directory |
 | **Admin Dashboard** | Real-time stats, order management, user management, settings |
 | **Support Tickets** | Threaded messaging between users and admins |
+| **Maintenance Mode** | Banner, popup & full-page modes; admin-only site access during full-page maintenance |
 
 ---
 
@@ -99,12 +100,14 @@ RS_DIGITAL_HUB/
 │
 ├── 📋 admin/                 # Administrator panel
 │   ├── 🔄 ajax/              # Asynchronous request handlers
-│   └── 🧩 includes/          # Admin layout components
+│   ├── 🧩 includes/          # Admin layout components
+│   └── 🛠 maintenance.php    # Maintenance mode settings
 │
 ├── 🎨 assets/                # Static assets (CSS, JS, Images)
 ├── 📦 classes/               # PHP OOP classes
 ├── 👨‍💻 developer/           # Developer dashboard & store
 ├── 🛠 includes/              # Core helpers & functions
+│   └── 🛠 maintenance.php    # Maintenance logic (banner/popup/full-page)
 ├── 🧾 invoices/              # Invoice generation engine
 │   └── 📐 templates/         # Invoice PDF templates
 ├── 📚 lib/tcpdf/             # TCPDF library
