@@ -39,6 +39,7 @@ if (empty($_SESSION['csrf_token'])) {
 date_default_timezone_set('Asia/Kolkata');
 
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/maintenance.php';
 
 // Ensure upload directories exist
 if (!is_dir(UPLOAD_DIR)) {
@@ -128,3 +129,6 @@ if (!is_dir(ADMIN_ASSETS_DIR)) {
 if (function_exists('ensureCompanyStamp')) {
     ensureCompanyStamp();
 }
+
+// Maintenance mode (full-page block)
+checkMaintenanceFullPage();

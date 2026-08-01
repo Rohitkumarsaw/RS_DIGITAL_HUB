@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 </head>
 <body>
+    <?php renderMaintenanceNotice(); ?>
     <div class="auth-container">
         <div class="auth-card">
             <h2>Admin Login</h2>

@@ -57,6 +57,7 @@ $flash = getFlash();
     </script>
 </head>
 <body>
+    <?php renderMaintenanceNotice(); ?>
     <!-- Flash Messages -->
     <?php if ($flash): ?>
     <?php $allowedTypes = ['success', 'error', 'warning', 'info']; $flashType = in_array($flash['type'], $allowedTypes) ? $flash['type'] : 'info'; ?>
